@@ -1,11 +1,11 @@
 # Student Math quiz
 
-A simple [Golang]() math quiz that parses CSV file with math problems and their answers and times the student
+A simple [Golang](https://golang.org/) math quiz that parses CSV file with math problems and their answers and times the student
 as they answer the questions. This is a command line program that purely runs on Go.
 
 ## Pre-requisites
 
-You will need [Golang]() already setup. You can download it from the link provided.
+You will need [Golang](https://golang.org/) already setup. You can download it from the link provided.
 
 Once you have that setup, build the application with:
 
