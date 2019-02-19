@@ -6,10 +6,13 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 )
 
 func main() {
 	csvFileName := flag.String("csv", "problems.csv", "a csv file in the format of 'question, answer'")
+	timeLimit := flag.Int("limit", 30, "the time limit for the quiz in seconds")
+
 	flag.Parse()
 
 	// using a pointer to the actual file, due to Flag parsing a string
@@ -31,23 +34,33 @@ func main() {
 	// parse the problems
 	problems := parseLines(lines)
 
-	fmt.Println(problems)
+	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
 
-	correct_answers := 0
+	correctAnswers := 0
 
 	// print out problems to user
-	for i, problem := range problems  {
-		fmt.Printf("Problem #%d: %s = \n", i+1, problem.question)
-		var answer string
+	for i, problem := range problems {
+		fmt.Printf("Problem #%d: %s = ", i+1, problem.question)
 
-		fmt.Scanf("%s\n", &answer)
+		answerChannel := make(chan string)
 
-		if answer == problem.answer {
-			correct_answers ++
+		go func() {
+			var answer string
+			fmt.Scanf("%s\n", &answer)
+			answerChannel <- answer
+		}()
+
+		select {
+		case <-timer.C:
+			fmt.Printf("\nYou got %d out of %d correct.\n", correctAnswers, len(problems))
+			return
+
+		case answer := <-answerChannel:
+			if answer == problem.answer {
+				correctAnswers ++
+			}
 		}
 	}
-
-	fmt.Printf("You got %d out of %d correct.\n", correct_answers, len(problems))
 }
 
 // Parse lines in the csv and returns the struct with the problems

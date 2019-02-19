@@ -23,7 +23,19 @@ Now you can run the program with:
 Usage of ./main:
   -csv string
         a csv file in the format of 'question, answer' (default "problems.csv")
+  -limit int
+        the time limit for the quiz in seconds (default 30)
        
 ```
 > as the help suggests, you can pass in a path to the CSV file or use the default one [provided](./problems.csv)
 
+
+```bash
+$ ./main -limit=5      
+Problem #1: 5+5 = 10
+Problem #2: 7+3 = 10
+Problem #3: 1+1 = 2
+Problem #4: 8+3 = 
+You got 3 out of 13 correct.
+```
+> An example execution of the program with a 5 second time limit
